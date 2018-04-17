@@ -1,0 +1,15 @@
+Vastoma
+
+Many of us have friends, relatives, and possibly business partners all over 
+the world, whom we see only infrequently when traveling. However, planning a
+trip to see far-away friends is currently a rather imprecise science: in the
+best-case scenario, you post about each trip on social media, your friends
+comment on the post, and then you follow up with each friend individually. In
+the worst-case scenario, you have to remember who you know in each city you
+plan to visit, and message every person separately. 
+
+We can simplify this process. Vastoma — meaning "meeting" in the Finno-Ugric
+language Mokša — will let you publish your travel plans to any and all of your
+friends and family members who live at (or are also planning to travel to)
+your destination. At Ultrahack, we intend to build a functional prototype 
+(simple web app + backend) of our solution. 

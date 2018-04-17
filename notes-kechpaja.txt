@@ -1,0 +1,17 @@
+Progressive Web App
+
+Scrape data Facebookista? 
+
+Kirjautua tai tehdä tilin
+
+Allow user to invite Facebook friends to service, or phone contacts?
+
+
+Can we send a Facebook notification to someone not using our service? How
+about just a messenger connect request? 
+
+
+Can pick and choose friends from list to send travel notification to
+
+
+
