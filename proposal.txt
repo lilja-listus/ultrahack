@@ -10,5 +10,85 @@ share your travel plans with your friends and relatives living at (or planning
 to travel to) your destination, and put you in touch with anyone who wants to
 meet up. 
 
-We intend to build a functional prototype (simple web app + backend) of the
-planned service, using AWS and Google's Progressive Web App framework. 
+Our solution will:
+
+### Provide a simple UI for publishing travel plans
+
+Select a city, arrival time, and departure time from an intuitive menu. 
+
+
+### Inform you of potential meetup dates
+
+If you and a friend will be in the same place at the same time, Vastoma will
+notify both of you, and start an email or IM thread in which you can make
+plans. 
+
+
+### Share your plans with your friends, and only your friends
+
+Before a new travel plan is published, you will be asked to choose who should
+hear about it, and who shouldn't. You can share your weekend getaway with your
+best friends, without worrying that your nosy co-workers will show up halfway
+through. Make lists of friends and family to notify all at once, or add people
+one by one. 
+
+
+### Integrate with existing social networks
+
+This is a bit of a stretch goal during the weekend hackathon, but our final
+product will allow you to import your personal data, including contacts and 
+current place of residence, from existing social media accounts. 
+
+
+## Work Plan for Ultrahack
+
+To maximize the utility of our limited time at Ultrahack, we will be focusing
+on core functionality, with a couple of stretch goals if we finish early. 
+
+
+### Functional AWS Backend
+
+One of our two essential tasks is getting the backend up and running: setting
+up our database, writing the necessary endpoints, and ensuring that they
+function as planned. 
+
+
+### Basic UI
+
+The other essential task is UI functionality. We will need simple and
+intuitive flows for creating an account, searching for and adding friends, and
+publishing a travel plan, as well as push notifications when your plans
+overlap with those of your friends. Less essential but still desirable (and
+likely very easy) are friend lists. 
+
+
+### Social Network Integration
+
+Upon creating their account, a user should be able to import their friends and
+place of residence from their existing social media accounts. Although the
+service will still function without this, it will be much more appealing to
+the average user if they don't have to fill out yet another profile by hand. 
+
+
+### Localization
+
+We will be building with localization in mind from the very beginning. Time
+and energy permitting, we would like to provide at the very least Finnish and
+Russian translations of our app, in addition to the default English. 
+
+
+
+## Challenges
+
+### Privacy
+
+A person's travel plans are, perhaps obviously, fairly sensitive data. While
+some risk can be mitigated by following good security practices (both on the
+coding side and, in a hypothetical future company, the human side), preventing
+data breeches is only the tip of the iceberg. What steps can we take to reduce
+the impact if a breech does occur? What is the absolute minimum amount of
+personal data we can collect, and the minimum length of time we can store it
+for, while still providing our intended service? Is end-to-end encryption
+worth the hassle? 
+
+
