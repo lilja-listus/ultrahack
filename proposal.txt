@@ -5,7 +5,7 @@ However, even when we know we'll be traveling to a place near where they live,
 planning to actually meet up is a hassle: social media posts get buried by 
 algorithms, emails go unsent, friends move and forget to let us know. 
 
-We can do better. Vastoma — from the Mordviniv word for "meeting" — will
+We can do better. Vastoma — from the Mordvinic word for "meeting" — will
 share your travel plans with your friends and relatives living at (or planning
 to travel to) your destination, and put you in touch with anyone who wants to
 meet up. 
@@ -91,4 +91,12 @@ personal data we can collect, and the minimum length of time we can store it
 for, while still providing our intended service? Is end-to-end encryption
 worth the hassle? 
 
+### Business Model
 
+Although a service like ours could hypothetically be run as a subscription
+service, in the current ecosystem of free cloud services, it would likely be
+quickly out-competed by deep-pocketed corporations who can afford to run their
+own version for free. A better model, perhaps, would be to offer advertising
+space to travel-focused businesses, as well as providing links to restaurants
+and other local business at the bottom of each schedule overlap notification;
+however, only time will tell if this is viable in the long run. 
