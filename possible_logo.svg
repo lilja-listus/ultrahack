@@ -1,0 +1,7 @@
+<svg height="1024" width="1024">
+    <line x1="512" y1="100" x2="100" y2="924" stroke="blue" stroke-width="100"></line>
+    <line x1="512" y1="100" x2="924" y2="924" stroke="blue" stroke-width="100"></line>
+    <line x1="306" y1="512" x2="718" y2="512" stroke="blue" stroke-width="100"></line>
+    <line x1="100" y1="100" x2="512" y2="924" stroke="green" stroke-width="100"></line>
+    <line x1="924" y1="100" x2="512" y2="924" stroke="green" stroke-width="100"></line>
+</svg>
