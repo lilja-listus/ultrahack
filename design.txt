@@ -58,8 +58,6 @@ Do we ban users from submitting travel notices to their own location?
     shared with, with no additional filtering. 
 
 
-
-
  - Database
 
  () (Table of friends?: userID X userID) (Only if we have time; same with
@@ -103,8 +101,15 @@ Do we ban users from submitting travel notices to their own location?
                      "searchString" : <string> // Can be null, undefined, or empty
                  }
     returns JSON object: {
-                             "users" : [ <user ID>, ... ],
-                             "lists" : [ <list ID>, ... ]
+                             "users" : [
+                                 {
+                                     "username" : <string>,
+                                     "name" : <string>,
+                                     "id" : <user ID>,
+                                     "home" : <location ID>
+                                 }
+                             ],
+                             "lists" : [ <list ID>, ... ] // Don't use this yet
                          }
     To avoid overtaxing the network, this returns only the first N results, for
     a fairly small N (100?). But it will still be enough to require scrolling
@@ -135,6 +140,12 @@ Do we ban users from submitting travel notices to their own location?
                      "home" : <location ID>
                  }
 
+ () new_user_list - POST
+    data object: {
+                     "name" : <string>,
+                     "users" : [ <user ID>, ... ]
+                 }
+
 
  - Future
 
@@ -142,3 +153,7 @@ Do we ban users from submitting travel notices to their own location?
     new notice contradicting their existing plans, or cancels a notice they
     posted? Probably don't need any special infrastructure for this; just send
     a notice for the new location?
+
+ () Currently a user's home location is public to all other users of the
+    service. That should change. Should allow user to add people to follow, and
+    also people who they permit to see their home location. 
