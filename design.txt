@@ -1,6 +1,37 @@
 Design
 
 
+ - Travel notice submisison flow
+
+ () User selects destination, start and end dates/times, and friends to share
+    with
+    () list of friends to share with is returned by call to sharing_targets
+       endpoint
+
+ () User clicks "submit"
+
+ () new_travel_notice endpoint is called
+
+
+ - Login flow
+
+**Let's not focus on auth other than to build a very simple login page. We can
+make sure we're doing things securely later. **
+
+ () User puts username or email and credential into fields
+
+ () login endpoint is called
+
+
+ - New User flow
+
+ () User puts email, username, name, password, and home location into fields
+    () Be sure to validate email address in front end
+    () Should be hashing passwords. 
+
+ () new_user endpoint is called
+
+
 
  - Account Matching Logic
 
@@ -31,9 +62,10 @@ Do we ban users from submitting travel notices to their own location?
 
  - Database
 
- () Table of friends: userID X userID
+ () (Table of friends?: userID X userID) (Only if we have time; same with
+    friend lists)
 
- () Table of users: userID, username and/or name, home, ???
+ () Table of users: userID, username and/or name, email, password, home, ???
 
  () Table of travel plans: planID, userID, destination, start time
     () We don't need end times --- just add another row for the trip home.
@@ -42,6 +74,66 @@ Do we ban users from submitting travel notices to their own location?
  () Visibility table: planID X userID (i.e. plan123 X kechpaja = kechpaja knows
     about plan123)
 
+
+ - Endpoints
+
+ () new_travel_notice - requires a POST request. 
+    data object: {
+                     "destination" : <location ID>,
+                     "start" : <datetime>,
+                     "end" : <datetime>,
+                     "audience" : [
+                         <user ID>,
+                         ...
+                     ]
+                 }
+
+ () user_info - GET request
+    returns JSON object: {
+                             "id" : <user ID>,
+                             "username" : <string>,
+                             "name" : <string>,
+                             "home" : <location ID>
+                         }
+
+ () sharing_targets
+    If a search string is included, only friends whose names or usernames match
+    that string will be returned. 
+    data object: {
+                     "searchString" : <string> // Can be null, undefined, or empty
+                 }
+    returns JSON object: {
+                             "users" : [ <user ID>, ... ],
+                             "lists" : [ <list ID>, ... ]
+                         }
+    To avoid overtaxing the network, this returns only the first N results, for
+    a fairly small N (100?). But it will still be enough to require scrolling
+    the returned list. 
+
+ () locations - GET
+    For now, this just returns a prepackaged list of cities. Later on, we can
+    think about supporting arbitrary coordinates, or allowing users to define
+    their own important destinations to be shared with their friends. 
+    returns JSON object: [
+                             <location ID>,
+                             ....
+                         ]
+
+ () login
+    This endpoint sets an HTTP only cookie.
+    TODO: internal structure. Must send both username/email and credential. 
+    TODO: should we use cierge?
+    You get something back, but token won't be accessible from JS. That is by
+    design.
+
+ () new_user - POST
+    data object: {
+                     "username" : <string>,
+                     "name" : <string>,
+                     "email" : <string>,
+                     "password" : <string>,
+                     "home" : <location ID>
+                 }
 
 
  - Future
