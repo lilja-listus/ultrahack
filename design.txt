@@ -1,0 +1,52 @@
+Design
+
+
+
+ - Account Matching Logic
+
+When a new travel notice arrives, it will need to be compared to the user's
+existing schedule:
+
+Do we ban users from submitting travel notices to their own location?
+
+ () Let current user be "user" and user who sent travel notice be "friend"
+
+ () Fetch all of user's travel notices with a start date greater than friend's
+    end date and end date less than friend's start date. If this is a
+    non-empty set, determine precise dates of overlap and non-overlap, and
+    send notifications if user and friend will be in the same place at the
+    same time. 
+
+ () Ignore notice from friend if there is no overlap, and notice is not for
+    user's home location. Otherwise, send notification to user. If user's
+    location at that time will be their home location, or their planned
+    location was added via a travel notice shared with friend, then send an
+    email to friend as well. 
+
+ () Submitted travel notices are sent off to each user who they are meant to be
+    shared with, with no additional filtering. 
+
+
+
+
+ - Database
+
+ () Table of friends: userID X userID
+
+ () Table of users: userID, username and/or name, home, ???
+
+ () Table of travel plans: planID, userID, destination, start time
+    () We don't need end times --- just add another row for the trip home.
+       There will be end times in the actual notifications, just not in DB.
+
+ () Visibility table: planID X userID (i.e. plan123 X kechpaja = kechpaja knows
+    about plan123)
+
+
+
+ - Future
+
+ () Automatically send notification canceling travel notice when user adds a
+    new notice contradicting their existing plans, or cancels a notice they
+    posted? Probably don't need any special infrastructure for this; just send
+    a notice for the new location?
