@@ -1,0 +1,10 @@
+<svg height="1024" width="1024" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="65,450 195,615 295,285 265,285 195,585 95,450" fill="green"></polygon>
+
+    <!--<line x1="80" y1="450" x2="180" y2="600" stroke="green" stroke-width="30" stroke-linecap="round"></line>
+    <line x1="180" y1="600" x2="280" y2="300" stroke="green" stroke-width="30" stroke-linecap="round"></line>-->
+    
+    <!--<text x="100" y="600" font-size="250" style="font: sans-serif" fill="green">V</text>-->
+    
+    <text x="230" y="600" font-size="220" font-family="sans-serif" fill="blue">astoma</text>
+</svg>
