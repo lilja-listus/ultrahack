@@ -91,7 +91,10 @@ Do we ban users from submitting travel notices to their own location?
                              "id" : <user ID>,
                              "username" : <string>,
                              "name" : <string>,
-                             "home" : <location ID>
+                             "home" : {
+                                 "id" : <location ID>,
+                                 "name" : "Some City or Town"
+                             }
                          }
 
  () sharing_targets
@@ -120,7 +123,7 @@ Do we ban users from submitting travel notices to their own location?
     think about supporting arbitrary coordinates, or allowing users to define
     their own important destinations to be shared with their friends. 
     returns JSON object: [
-                             <location ID>,
+                             { "id" : <location ID>, "name" : "Some city" },
                              ....
                          ]
 
