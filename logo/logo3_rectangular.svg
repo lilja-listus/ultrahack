@@ -1,0 +1,4 @@
+<svg height="512" width="1024" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="65,250 195,415 295,85 265,85 195,385 95,250" fill="green"></polygon>
+    <text x="230" y="400" font-size="220" font-family="sans-serif" fill="blue">astoma</text>
+</svg>
