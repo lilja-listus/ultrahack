@@ -4,34 +4,35 @@
     <meta charset="utf-8">
     <title>Login</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js">
-    </script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
-    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/login_style.css">
-    <script src="login.js">
+    <script src="./JS/login.js">
     </script>
   </head>
   
   <body>
     <img src="file:///home/lilja/index.jpeg" alt="Vastoma logo">
-    <form>
+    <form id="loginForm" method="post" action="">
   
   <div class="imgcontainer">
   </div>
 
   <div class="container">
-    <label for="uname"><b>e-mail</b></label>
-    <input type="text" placeholder="Enter e-mail" name="email" required>
-    <label for="psw"><b>password</b></label>
-    <input type="password" placeholder="Enter password" name="psw" required>
-    <button type="submit">Login</button>
+    <label for="email"><b>e-mail</b></label>
+    <input type="text" placeholder="Enter e-mail" name="email" id="email" required>
+    <label for="password"><b>password</b></label>
+    <input type="password" placeholder="Enter password" name="password" id="password" required>
+   
+   <button type="submit" name="submitButton" id="submitButton">Login</button> 
+
 
 </form>
 
   </div>
 
+<div id="loginResult" style="display:none;">
+
+</div>
    <a href="./signup.html"><button id="sign_up">Sign up</button>
 
   </body>

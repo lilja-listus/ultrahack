@@ -1,0 +1,6 @@
+extended features:
+- sending notifications via email
+
+business:
+- travel agencies
+- airplane companies
