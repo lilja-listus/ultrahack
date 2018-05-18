@@ -1,0 +1,24 @@
+
+body{
+	text-align: center;
+}
+img{
+
+    width:50%;
+}
+
+#form_background{
+width:400px;
+border-radius: 10px;
+border: 2px solid #ccc;
+padding: 10px 40px 25px;
+margin-top: -2px;
+position: relative;
+margin: 0 auto;
+text-align: left;
+}
+#new_travel{
+	text-align: center;
+	font-size: 1.5em;
+}
+
