@@ -1,0 +1,8 @@
+Queries needed to create DB tables:
+
+create table users (id bigint primary key not null AUTO_INCREMENT, email varchar(255) not null, name varchar(255) not null, password varchar(255) not null, home varchar(255) not null);
+
+create table travel_plans (id bigint primary key not null AUTO_INCREMENT, user
+bigint not null references users(id), destination varchar(255) not null, start_time bigint not null, end_time bigint not null);
+
+TODO: visibility
