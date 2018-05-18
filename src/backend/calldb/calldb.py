@@ -10,10 +10,21 @@ class DatabaseWrapper(object):
     def __init__(self):
         pass # TODO create DB as self.db
 
-    def getUserInfo(self, uesrID):
-        return {} # TODO return something for real
+    def getUserInfo(self, userID):
+        # TODO actually query some DB!
+        return { 
+                   "id" : userID,
+                   "username" : "arya",
+                   "name" : "A girl has no name",
+                   "home" : {
+                       "id" : "westeros_winterfell",
+                       "name" : "Winterfell"
+                   }
+               }
 
 
 
 
-# Exportable function to create DatabaseWRapper object. 
+# Exportable function to create DatabaseWrapper object. 
+def dbwrapper():
+    return DatabaseWrapper()

@@ -8,13 +8,26 @@
 import falcon
 import json
 
+# TODO if this doesn't work, we may need to 
+import calldb
+
 
 
 class UsersResource(object):
-    # TODO do we need an init func? 
+    def __init__(self, dbwrapper):
+        self.dbwrapper = dbwrapper
 
     def on_get(self, req, resp, user):
-        # TODO call out to DB and get users
+        userInfo = self.dbwrapper.getUserInfo(user)
+
+        if not userInfo:
+            # XXX Is this enough?
+            resp.status = falcon.HTTP_404 # User not found
+        else:
+            resp.status = falcon.HTTP_200
+            # XXX I *think* this needs a string?
+            resp.body = json.dumps(userInfo)
+
 
 
 
@@ -25,6 +38,9 @@ class UsersResource(object):
 # Start everything up
 #####
 
+# Create a single database wrapper
+dbwrapper = calldb.dbwrapper()
+
 app = falcon.API()
 
-app.add_route("/api/user_info/{user}", UsersResource())
+app.add_route("/api/user_info/{user}", UsersResource(dbwrapper))
