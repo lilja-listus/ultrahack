@@ -18,14 +18,14 @@ Design
 **Let's not focus on auth other than to build a very simple login page. We can
 make sure we're doing things securely later. **
 
- () User puts username or email and credential into fields
+ () User puts email and credential into fields
 
  () login endpoint is called
 
 
  - New User flow
 
- () User puts email, username, name, password, and home location into fields
+ () User puts email, name, password, and home location into fields
     () Be sure to validate email address in front end
     () Should be hashing passwords. 
 
@@ -97,8 +97,8 @@ Do we ban users from submitting travel notices to their own location?
                          }
 
  () sharing_targets
-    If a search string is included, only friends whose names or usernames match
-    that string will be returned. 
+    If a search string is included, only friends whose names match that string
+    will be returned. 
     data object: {
                      "searchString" : <string> // Can be null, undefined, or empty
                  }
