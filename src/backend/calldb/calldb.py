@@ -52,7 +52,9 @@ class DatabaseWrapper(object):
         query = "insert into " + table + " (" + ", ".join(keys) + ") values (" \
               + ", ".join(["?"]*len(keys)) + ")"
         self.cursor.execute(query, *[data[k] for k in keys])
+        rowID = self.cursor.lastrowid # XXX does this work?
         self.connection.commit()
+        return rowID
 
     def qUserWhere(self, col, val):
         # TODO clean this up. Do we even need this helper method?
@@ -83,9 +85,12 @@ class DatabaseWrapper(object):
                          "name" : name})
         return True # XXX When would we return false?
 
+    # TODO check: can that query fail?
     def addTravelNotice(self, user, destination, start, end):
-        # TODO Actually put the travel notice into the database
-        return True
+        return self.i("travel_plans", {"user" : user,
+                                       "destination" : destination,
+                                       "start_time" : start,
+                                       "end_time" : end})
 
     def verifyPassword(self, user, password):
         rows = self.q("select password from users where id = ?", user)

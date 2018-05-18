@@ -149,14 +149,20 @@ class TravelNoticeResource(GeneralResource):
         start = data["start"] # TODO decode timestamp?
         end = data["end"] # TODO decode another timestamp?
 
+        # TODO check that all fields are actually included in object
+
         # TODO check for conflicts? Nope, better to do that in the front end
         # if we want to bother with it at all. 
+
+        planID = self.db.addTravelNotice(user, data["destination"], start, end)
 
         # Handle notifications of possible overlaping schedules in background
         if "audience" in data and type(data["audience"]) == list:
             background(handleOverlaps, (data["audience"],))
-
-        if self.db.addTravelNotice(user, data["destination"], start, end):
+            # TODO update visibility table
+        
+        # TODO this whole check should be a try/catch
+        if planID:
             resp.status = falcon.HTTP_200
         else:
             resp.status = falcon.HTTP_503
