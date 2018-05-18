@@ -18,14 +18,14 @@ Design
 **Let's not focus on auth other than to build a very simple login page. We can
 make sure we're doing things securely later. **
 
- () User puts username or email and credential into fields
+ () User puts email and credential into fields
 
  () login endpoint is called
 
 
  - New User flow
 
- () User puts email, username, name, password, and home location into fields
+ () User puts email, name, password, and home location into fields
     () Be sure to validate email address in front end
     () Should be hashing passwords. 
 
@@ -75,7 +75,7 @@ Do we ban users from submitting travel notices to their own location?
 
  - Endpoints
 
- () new_travel_notice - requires a POST request. 
+ (x) new_travel_notice - requires a POST request. 
     data object: {
                      "destination" : <location ID>,
                      "start" : <datetime>,
@@ -89,7 +89,6 @@ Do we ban users from submitting travel notices to their own location?
  (x) user_info/$userID - GET request
     returns JSON object: {
                              "id" : <user ID>,
-                             "username" : <string>,
                              "name" : <string>,
                              "home" : {
                                  "id" : <location ID>,
@@ -98,18 +97,20 @@ Do we ban users from submitting travel notices to their own location?
                          }
 
  () sharing_targets
-    If a search string is included, only friends whose names or usernames match
-    that string will be returned. 
+    If a search string is included, only friends whose names match that string
+    will be returned. 
     data object: {
                      "searchString" : <string> // Can be null, undefined, or empty
                  }
     returns JSON object: {
                              "users" : [
                                  {
-                                     "username" : <string>,
                                      "name" : <string>,
                                      "id" : <user ID>,
-                                     "home" : <location ID>
+                                     "home" : {
+                                         "id" : <location ID>,
+                                         "name" : "City or town"
+                                     }
                                  }
                              ],
                              "lists" : [ <list ID>, ... ] // Don't use this yet
@@ -136,7 +137,6 @@ Do we ban users from submitting travel notices to their own location?
 
  () new_user - POST
     data object: {
-                     "username" : <string>,
                      "name" : <string>,
                      "email" : <string>,
                      "password" : <string>,

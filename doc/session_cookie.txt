@@ -1,0 +1,17 @@
+This isn't going to be the final auth system, but it will need to be good
+enough for us to get through the hackathon. Update to something
+industry-standard later if we ever actually go live. 
+
+
+Session information is stored as an HTTP-only cookie, set by the login
+endpoint. This cookie must contain both the user ID and some auth token that
+will be verified on every endpoint call. 
+
+How about two cookies:
+
+userID: <user ID>
+authToken: <auth token>
+
+This means that user ID's can't contain colons, but that's no big deal. They
+may contain @ signs if we ever set up federation, but for the most part they
+will be alphanumeric, hex, or perhaps just numeric strings. 

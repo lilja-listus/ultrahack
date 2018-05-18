@@ -10,10 +10,10 @@ class DatabaseWrapper(object):
     def __init__(self):
         pass # TODO create DB as self.db
 
-    def getUserInfo(self, userID):
+    def getUserInfo(self, user):
         # TODO actually query some DB!
         return { 
-                   "id" : userID,
+                   "id" : user,
                    "username" : "arya",
                    "name" : "A girl has no name",
                    "home" : {
@@ -21,6 +21,10 @@ class DatabaseWrapper(object):
                        "name" : "Winterfell"
                    }
                }
+
+    def addTravelNotice(self, user, destination, start, end):
+        # TODO Actually put the travel notice into the database
+        return True
 
 
 
