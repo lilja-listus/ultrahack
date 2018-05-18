@@ -86,7 +86,7 @@ Do we ban users from submitting travel notices to their own location?
                      ]
                  }
 
- () user_info/$userID - GET request
+ (x) user_info/$userID - GET request
     returns JSON object: {
                              "id" : <user ID>,
                              "username" : <string>,
