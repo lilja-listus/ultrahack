@@ -89,7 +89,6 @@ Do we ban users from submitting travel notices to their own location?
  (x) user_info/$userID - GET request
     returns JSON object: {
                              "id" : <user ID>,
-                             "username" : <string>,
                              "name" : <string>,
                              "home" : {
                                  "id" : <location ID>,
@@ -106,10 +105,12 @@ Do we ban users from submitting travel notices to their own location?
     returns JSON object: {
                              "users" : [
                                  {
-                                     "username" : <string>,
                                      "name" : <string>,
                                      "id" : <user ID>,
-                                     "home" : <location ID>
+                                     "home" : {
+                                         "id" : <location ID>,
+                                         "name" : "City or town"
+                                     }
                                  }
                              ],
                              "lists" : [ <list ID>, ... ] // Don't use this yet
@@ -136,7 +137,6 @@ Do we ban users from submitting travel notices to their own location?
 
  () new_user - POST
     data object: {
-                     "username" : <string>,
                      "name" : <string>,
                      "email" : <string>,
                      "password" : <string>,
