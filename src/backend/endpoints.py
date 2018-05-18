@@ -82,6 +82,10 @@ class LoginResource(GeneralResource):
         user =self.db.getUserByEmail(data["email"]) if "email" in data else None
         if user and self.db.verifyPassword(user, data["password"]):
             resp.set_cookie(userCookieName, user, http_only=False)
+
+            # TODO generate this in some actually useful manner
+            authToken = "5678"
+
             resp.set_cookie(authTokenCookieName, authToken)
 
             resp.status = falcon.HTTP_200
