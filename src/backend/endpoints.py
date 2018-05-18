@@ -90,6 +90,23 @@ class LoginResource(GeneralResource):
             resp.status = falcon.HTTP_401
 
 
+class NewUserResource(GeneralResource):
+    def on_post(self, req, resp):
+        data = json.load(req.stream)
+
+        if "email" in data and "password" in data and "home" in data:
+            name = data["name"] if "name" in data else ""
+            email = data["email"]
+            password = data["password"]
+            home = data["home"]
+            if self.db.addNewUser(email, password, home, name):
+                resp.status = falcon.HTTP_200
+            else:
+                resp.status = falcon.HTTP_503
+        else:
+            resp.status = falcon.HTTP_400 # Bad request
+
+
 class UsersResource(GeneralResource):
     def on_get(self, req, resp, user=None):
         loggedInUser = verifyLoginAndGetUser(req.cookies)
@@ -144,4 +161,5 @@ app = falcon.API()
 
 app.add_route("/api/login", LoginResource(dbwrapper))
 app.add_route("/api/new_travel_notice", TravelNoticeResource(dbwrapper))
+app.add_route("/api/new_user", NewUserResource(dbwrapper))
 app.add_route("/api/user_info/{user}", UsersResource(dbwrapper))

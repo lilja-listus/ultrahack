@@ -24,6 +24,9 @@ class DatabaseWrapper(object):
     def getUserByEmail(self, email):
         return "1234" # TODO get actual user ID, or None if no such user
 
+    def addNewUser(self, email, password, home, name):
+         return True # TODO
+
     def addTravelNotice(self, user, destination, start, end):
         # TODO Actually put the travel notice into the database
         return True

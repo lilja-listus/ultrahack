@@ -138,7 +138,7 @@ Do we ban users from submitting travel notices to their own location?
     FUTURE: user can be automatically redirected to the page they were
     originally going to. 
 
- () new_user - POST
+ (x) new_user - POST
     data object: {
                      "name" : <string>,
                      "email" : <string>,
