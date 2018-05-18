@@ -96,12 +96,10 @@ Do we ban users from submitting travel notices to their own location?
                              }
                          }
 
- () sharing_targets
+ (x) sharing_targets/$searchString
+    $searchString may be omitted. 
     If a search string is included, only friends whose names match that string
-    will be returned. 
-    data object: {
-                     "searchString" : <string> // Can be null, undefined, or empty
-                 }
+    will be returned.
     returns JSON object: {
                              "users" : [
                                  {
@@ -120,22 +118,20 @@ Do we ban users from submitting travel notices to their own location?
     the returned list. 
 
  () locations - GET
-    For now, this just returns a prepackaged list of cities. Later on, we can
-    think about supporting arbitrary coordinates, or allowing users to define
-    their own important destinations to be shared with their friends. 
-    returns JSON object: [
-                             { "id" : <location ID>, "name" : "Some city" },
-                             ....
-                         ]
+    We may eventually want to let users create their own locations, but for now
+    we can just use the Google places API. Key is in WhatsApp. 
 
- () login
+ (x) login - POST
     This endpoint sets an HTTP only cookie.
-    TODO: internal structure. Must send both username/email and credential. 
-    TODO: should we use cierge?
-    You get something back, but token won't be accessible from JS. That is by
-    design.
+    data object: {
+                     "email" : <email address as string>,
+                     "credential" : <hashed password as string>
+                 }
+    User will then be automatically redirected to the home page.
+    FUTURE: user can be automatically redirected to the page they were
+    originally going to. 
 
- () new_user - POST
+ (x) new_user - POST
     data object: {
                      "name" : <string>,
                      "email" : <string>,
