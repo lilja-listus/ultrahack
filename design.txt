@@ -75,7 +75,7 @@ Do we ban users from submitting travel notices to their own location?
 
  - Endpoints
 
- () new_travel_notice - requires a POST request. 
+ (x) new_travel_notice - requires a POST request. 
     data object: {
                      "destination" : <location ID>,
                      "start" : <datetime>,
