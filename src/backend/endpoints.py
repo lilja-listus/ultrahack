@@ -14,6 +14,16 @@ from threading import Thread
 import calldb
 
 
+######
+# Global Strings and other Magic Values
+#####
+
+userCookieName = "userID"
+authTokenCookieName = "authToken"
+
+
+
+
 #####
 # Utility Functions
 #####
@@ -45,18 +55,13 @@ def handleOverlaps(audience):
 
         # TODO do the stuff described in design doc
 
-
-def verifyUserLogin(cookies):
-    pass # TODO write this
-    # TODO do redirect to login page if user is not logged in
-
-
-def getUserFromCookie(cookies):
-    verifyUserLogin(cookies)
+def verifyLoginAndGetUser(cookies):
+    # TODO verify that user is logged in
+    # TODO throw an error to hijack request if not
     if "userID" in cookies:
         return cookies["userID"]
     else:
-        return None # TODO this is an error
+        return None # TODO this is an error, but it's probably our error.
 
 
 
@@ -69,12 +74,27 @@ class GeneralResource(object):
     def __init__(self, dbwrapper):
         self.db = dbwrapper
 
+
+class LoginResource(GeneralResource):
+    def on_post(self, req, resp):
+        data = json.load(req.stream)
+
+        user =self.db.getUserByEmail(data["email"]) if "email" in data else None
+        if user and self.db.verifyPassword(user, data["password"]):
+            resp.set_cookie(userCookieName, user, http_only=False)
+            resp.set_cookie(authTokenCookieName, authToken)
+
+            resp.status = falcon.HTTP_200
+            # XXX do we send back a specific redirect URL?
+        else:
+            resp.status = falcon.HTTP_401
+
+
 class UsersResource(GeneralResource):
     def on_get(self, req, resp, user=None):
+        loggedInUser = verifyLoginAndGetUser(req.cookies)
         if not user:
-            user = getUserFromCookie(req.cookies)
-        else:
-            verifyUserLogin(cookies)
+            user = loggedInUser
 
         userInfo = self.db.getUserInfo(user)
 
@@ -90,8 +110,8 @@ class UsersResource(GeneralResource):
 # XXX XXX XXX this class is basically untested at this point
 class TravelNoticeResource(GeneralResource):
     def on_post(self, req, resp):
+        user = verifyLoginAndGetUser(req.cookies)
         data = json.load(req.stream)
-        user = getUserFromCookie(req)
         start = data["start"] # TODO decode timestamp?
         end = data["end"] # TODO decode another timestamp?
 
@@ -107,7 +127,7 @@ class TravelNoticeResource(GeneralResource):
         if self.db.addTravelNotice(user, data["destination"], start, end):
             resp.status = falcon.HTTP_200
         else:
-            resp.status = falcon.HTTP_503 # XXX right error?
+            resp.status = falcon.HTTP_503
 
 
 
@@ -122,5 +142,6 @@ dbwrapper = calldb.dbwrapper()
 
 app = falcon.API()
 
+app.add_route("/api/login", LoginResource(dbwrapper))
 app.add_route("/api/new_travel_notice", TravelNoticeResource(dbwrapper))
 app.add_route("/api/user_info/{user}", UsersResource(dbwrapper))

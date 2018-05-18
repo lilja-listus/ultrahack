@@ -14,7 +14,6 @@ class DatabaseWrapper(object):
         # TODO actually query some DB!
         return { 
                    "id" : user,
-                   "username" : "arya",
                    "name" : "A girl has no name",
                    "home" : {
                        "id" : "westeros_winterfell",
@@ -22,8 +21,15 @@ class DatabaseWrapper(object):
                    }
                }
 
+    def getUserByEmail(self, email):
+        return "1234" # TODO get actual user ID, or None if no such user
+
     def addTravelNotice(self, user, destination, start, end):
         # TODO Actually put the travel notice into the database
+        return True
+
+    def verifyPassword(self, user, password):
+        # TODO query DB for user's password and make sure it's correct.
         return True
 
 
