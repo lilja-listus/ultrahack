@@ -107,6 +107,19 @@ class NewUserResource(GeneralResource):
             resp.status = falcon.HTTP_400 # Bad request
 
 
+class SharingTargetsResource(GeneralResource):
+    def on_get(self, req, resp, regex):
+        # XXX so far, I don't think this will require authentication
+        userInfoObjs = self.db.getUsersByNameRegex(searchString)
+        if users:
+            # XXX add lists call when we actually have lists
+            data = {"users" : userInfoObjs, "lists" : []}
+            resp.body = json.dumps(data)
+            resp.status = falcon.HTTP_200
+        else:
+            resp.status = falcon.HTTP_503
+
+
 class UsersResource(GeneralResource):
     def on_get(self, req, resp, user=None):
         loggedInUser = verifyLoginAndGetUser(req.cookies)
@@ -138,8 +151,6 @@ class TravelNoticeResource(GeneralResource):
         # Handle notifications of possible overlaping schedules in background
         if "audience" in data and type(data["audience"]) == list:
             background(handleOverlaps, (data["audience"],))
-        else:
-            pass # TODO some error. Perhaps just ignore?
 
         if self.db.addTravelNotice(user, data["destination"], start, end):
             resp.status = falcon.HTTP_200
@@ -162,4 +173,5 @@ app = falcon.API()
 app.add_route("/api/login", LoginResource(dbwrapper))
 app.add_route("/api/new_travel_notice", TravelNoticeResource(dbwrapper))
 app.add_route("/api/new_user", NewUserResource(dbwrapper))
+app.add_route("/api/sharing_targets/{regex}", SharingTargetsResource(dbwrapper))
 app.add_route("/api/user_info/{user}", UsersResource(dbwrapper))

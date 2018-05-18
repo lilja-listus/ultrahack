@@ -24,6 +24,11 @@ class DatabaseWrapper(object):
     def getUserByEmail(self, email):
         return "1234" # TODO get actual user ID, or None if no such user
 
+    # XXX this returns a list of user objects, not just IDs
+    # Returns None on error
+    def getUsersByNameRegex(self, regex):
+        return [] # TODO Get all users whose names match given regex
+
     def addNewUser(self, email, password, home, name):
          return True # TODO
 

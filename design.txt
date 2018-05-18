@@ -96,12 +96,10 @@ Do we ban users from submitting travel notices to their own location?
                              }
                          }
 
- () sharing_targets
+ (x) sharing_targets/$searchString
+    $searchString may be omitted. 
     If a search string is included, only friends whose names match that string
-    will be returned. 
-    data object: {
-                     "searchString" : <string> // Can be null, undefined, or empty
-                 }
+    will be returned.
     returns JSON object: {
                              "users" : [
                                  {
