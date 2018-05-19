@@ -29,7 +29,7 @@ $(function() {
               //sending data to the server  
        $(function sendData() {
           $.ajax({
-          url: 'http://ec2-34-230-45-89.compute-1.amazonaws.com/api/new_travel_notice',
+          url: 'api/new_travel_notice',
           type: 'POST',
           data: myString, 
           dataType: 'json'
@@ -40,7 +40,7 @@ $(function() {
 
 //parsing json to create autocomplete for search
 $.ajax({
-  url: 'http://ec2-34-230-45-89.compute-1.amazonaws.com/api/sharing_targets',
+  url: 'api/sharing_targets',
 }).done(function(data) {
 
 var arrayUsers = [];

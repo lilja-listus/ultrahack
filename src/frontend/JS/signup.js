@@ -22,7 +22,7 @@ $(function() {
               //sending data to the server  
        $(function sendData() {
           $.ajax({
-          url: 'http://ec2-34-230-45-89.compute-1.amazonaws.com/api/new_user',
+          url: 'api/new_user',
           type: 'POST',
           //data: myString,
           data: newUserStr, 

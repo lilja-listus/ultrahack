@@ -15,7 +15,7 @@ $("#submitButton").click(function(){
 
    $(function sendData() {
           $.ajax({
-          url: 'http://ec2-34-230-45-89.compute-1.amazonaws.com/api/login',
+          url: 'api/login',
           type: 'POST',
           data: loginStr, 
           dataType: 'json'
