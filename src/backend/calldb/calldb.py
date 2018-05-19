@@ -52,9 +52,9 @@ class DatabaseWrapper(object):
         query = "insert into " + table + " (" + ", ".join(keys) + ") values (" \
               + ", ".join(["?"]*len(keys)) + ")"
         self.cursor.execute(query, *[data[k] for k in keys])
-        rowID = 0 #self.cursor.fetchone().id # XXX does this work?
+        rowID = self.cursor.execute("select last_insert_id()").fetchone()
         self.connection.commit()
-        return rowID
+        return rowID[0]
 
     def qUserWhere(self, col, val):
         # TODO clean this up. Do we even need this helper method?

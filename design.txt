@@ -129,7 +129,7 @@ Do we ban users from submitting travel notices to their own location?
     This endpoint sets an HTTP only cookie.
     data object: {
                      "email" : <email address as string>,
-                     "credential" : <hashed password as string>
+                     "password" : <hashed password as string>
                  }
     User will then be automatically redirected to the home page.
     FUTURE: user can be automatically redirected to the page they were
