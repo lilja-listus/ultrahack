@@ -113,6 +113,15 @@ class DatabaseWrapper(object):
         rows = self.cursor.fetchall()
         return [r[0] for r in rows]
 
+    def getPushSubscriptionsByUser(self, user):
+        sql = '''select endpoint, p256dh_key, auth_key from push_subscriptions
+                    where user = ?'''
+        self.cursor.execute(sql, user)
+        rows = self.cursor.fetchall()
+        return [{"endpoint" : r.endpoint, 
+                 "keys" : {"p256dh" : r.p256dh_key, 
+                           "auth" : r.auth_key}} for r in rows]
+
     def getTravelNotice(self, planID):
         sql = '''select id, destination, start_time, end_time from travel_plans
                  where id = ?'''
@@ -126,7 +135,9 @@ class DatabaseWrapper(object):
         return [travelNoticeRow2json(r) for r in self.cursor.fetchall()]
 
     def getUserContactInfo(self, user):
-        return self.q("select email from users where id = ?", user)[0]
+        email = self.q("select email from users where id = ?", user)[0]
+        return {"email" : email,
+                "push" : self.getPushSubscriptionsByUser(user)}
 
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)

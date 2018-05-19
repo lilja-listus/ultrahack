@@ -127,7 +127,10 @@ class SavePushSubscription(GeneralResource):
         loggedInUser = verifyLoginAndGetUser(req.cookies)
         data = getReqJsonBody(req)
         # TODO verify all necessary fields
-        # TODO db call
+        self.db.addPushSubscription(loggedInUser,
+                                    data["endpoint"],
+                                    data["keys"]["p256dh"],
+                                    data["keys"]["auth"])
         resp.status = falcon.HTTP_200
 
 
