@@ -118,10 +118,11 @@ class DatabaseWrapper(object):
                  where id = ?'''
         return travelNoticeRow2json(self.q(sql, planID))
 
-    def getTravelNoticesByUser(self, user):
+    def getTravelNoticeOverlaps(self, user, destination, start, end):
         sql = '''select id, destination, start_time, end_time from travel_plans
-                 where user = ?'''
-        self.cursor.execute(sql, user)
+                 where (user = ?) and (destination = ?)
+                    and (start_time < ?) and (end_time > ?)'''
+        self.cursor.execute(sql, user, destination, start, end)
         return [travelNoticeRow2json(r) for r in self.cursor.fetchall()]
 
     def getUserInfo(self, user):

@@ -159,19 +159,27 @@ class UsersResource(GeneralResource):
 
 class TravelNoticeResource(GeneralResource):
     # Argument "audience" is a list of user IDs
-    def handleOverlaps(user, audience):
+    def handleOverlaps(user, data):
         userContact = {} # Only fetch if necessary
-        for friend in audience:
-            friendNotices = self.db.getTravelNoticesByUser(friend)
-            userNotices = self.db.getTravelNoticesByUser(user)
+        for friend in data["audience"]:
+            overlaps = self.db.getTravelNoticeOverlaps(friend,
+                                                       data["destination"],
+                                                       data["start"],
+                                                       data["end"])
 
             friendContact = {} # Only fetch these if we need them
 
             # TODO filter for those that overlap with user
-            overlaps = [] # TODO fill this list with friend's travel notices
+            #overlaps = [] # TODO fill this list with friend's travel notices
                           # that overlap with this one of user's. Change travel
-                          # times to only match time of overlap. 
+                          # times to only match time of overlap.
 
+        #    for f in friendNotices:
+        #        if f["start"] < data["end"] and data["start"] < f["end"]:
+        #            # TODO match
+
+            # TODO can we do all of this in the database? I think so, but
+            # that's a problem for a later date. 
             for overlap in overlaps:
                 visibilityList = self.db.getVisibilityByTravelNotice(overlap.id)
                 if friendContact:
@@ -200,9 +208,9 @@ class TravelNoticeResource(GeneralResource):
 
         # Handle notifications of possible overlaping schedules in background
         if "audience" in data and type(data["audience"]) == list:
-            audience = self.convertAudience(data["audience"])
-            background(self.handleOverlaps, (user, audience))
-            background(self.db.addVisibilityRow, (planID, audience))
+            data["audience"] = self.convertAudience(data["audience"])
+            background(self.handleOverlaps, (user, data))
+            background(self.db.addVisibilityRow, (planID, data["audience"]))
         
         resp.status = falcon.HTTP_200
 
