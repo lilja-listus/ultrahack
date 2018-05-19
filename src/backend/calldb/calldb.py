@@ -52,16 +52,16 @@ class DatabaseWrapper(object):
         query = "insert into " + table + " (" + ", ".join(keys) + ") values (" \
               + ", ".join(["?"]*len(keys)) + ")"
         self.cursor.execute(query, *[data[k] for k in keys])
-        rowID = 0 #self.cursor.fetchone().id # XXX does this work?
+        rowID = self.cursor.execute("select last_insert_id()").fetchone()
         self.connection.commit()
-        return rowID
+        return rowID[0]
 
     def qUserWhere(self, col, val):
         # TODO clean this up. Do we even need this helper method?
-        rows = self.q("select id, name, home from users where "+col+" = ?", val)
-        if len(rows) == 0:
+        row = self.q("select id, name, home from users where "+col+" = ?", val)
+        if row == None:
             return None
-        return userRow2json(rows[0])
+        return userRow2json(row)
 
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
@@ -80,11 +80,10 @@ class DatabaseWrapper(object):
         # XXX we're just putting these back into an object, after we already 
         # converted them to arguments. But perhaps that's not the end of the
         # world if it makes things make more sense. 
-        self.i("users", {"email" : email,
-                         "password" : password,
-                         "home" : home,
-                         "name" : name})
-        return True # XXX When would we return false?
+        return self.i("users", {"email" : email,
+                                "password" : password,
+                                "home" : home,
+                                "name" : name})
 
     # TODO check: can that query fail?
     def addTravelNotice(self, user, destination, start, end):
@@ -92,6 +91,18 @@ class DatabaseWrapper(object):
                                        "destination" : destination,
                                        "start_time" : start,
                                        "end_time" : end})
+
+    def addVisibilityRow(self, travel_plan, audience):
+        if not audience:
+            return
+        query = "insert into visibility (travel_plan, user) values " \
+              + ", ".join(["(?, ?)"] * len(audience)) + ";"
+        args = []
+        for user in audience:
+            args.append(travel_plan)
+            args.append(user)
+        self.cursor.execute(query, *args)
+        self.connection.commit()
 
     def verifyPassword(self, user, password):
         rows = self.q("select password from users where id = ?", user)

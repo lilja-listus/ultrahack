@@ -55,11 +55,12 @@ def handleOverlaps(audience):
 
         # TODO do the stuff described in design doc
 
+
 def verifyLoginAndGetUser(cookies):
     # TODO verify that user is logged in
     # TODO throw an error to hijack request if not
-    if "userID" in cookies:
-        return cookies["userID"]
+    if userCookieName in cookies:
+        return cookies[userCookieName]
     else:
         return None # TODO this is an error, but it's probably our error.
 
@@ -77,7 +78,9 @@ class GeneralResource(object):
 
 class LoginResource(GeneralResource):
     def on_post(self, req, resp):
-        data = json.loads(str(req.stream.read()))
+        d = req.stream.read().decode("utf-8")
+        print(d)
+        data = json.loads(d)
 
         user =self.db.getUserByEmail(data["email"]) if "email" in data else None
         if user and self.db.verifyPassword(user, data["password"]):
@@ -96,17 +99,19 @@ class LoginResource(GeneralResource):
 
 class NewUserResource(GeneralResource):
     def on_post(self, req, resp):
-        data = json.loads(str(req.stream.read()))
+        d = req.stream.read().decode("utf-8")
+        print(d)
+        data = json.loads(d)
 
         if "email" in data and "password" in data and "home" in data:
             name = data["name"] if "name" in data else ""
             email = data["email"]
             password = data["password"]
             home = data["home"]
-            if self.db.addNewUser(email, password, home, name):
-                resp.status = falcon.HTTP_200
-            else:
-                resp.status = falcon.HTTP_503
+
+            # XXX consider error cases here
+            self.db.addNewUser(email, password, home, name)
+            resp.status = falcon.HTTP_200
         else:
             resp.status = falcon.HTTP_400 # Bad request
 
@@ -165,13 +170,10 @@ class TravelNoticeResource(GeneralResource):
         # Handle notifications of possible overlaping schedules in background
         if "audience" in data and type(data["audience"]) == list:
             background(handleOverlaps, (data["audience"],))
-            # TODO update visibility table
+            background(self.db.addVisibilityRow, (planID, data["audience"]))
         
         # TODO this whole check should be a try/catch
-        if planID:
-            resp.status = falcon.HTTP_200
-        else:
-            resp.status = falcon.HTTP_503
+        resp.status = falcon.HTTP_200
 
 
 
