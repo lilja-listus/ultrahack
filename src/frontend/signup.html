@@ -2,6 +2,11 @@
 <head>
 	<title>New User</title>
     <link rel="stylesheet" type="text/css" href="./css/signup_style.css">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="./JS/signup.js"> </script>
+
 </head>
 <body>
 <formstyle="border:1px solid #ccc">
@@ -10,26 +15,34 @@
     <hr>
 
     <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+    <input type="text" placeholder="Enter Email" name="email" id = "email" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="psw" id="password" required>
 
     <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+    <input type="password" placeholder="Repeat Password" name="psw-repeat" id="repeatPass" required>
 
     <label for="name"><b>Name(optional)</b></label>
-    <input type="text" placeholder="Enter Name" name="name">
+    <input type="text" placeholder="Enter Name" name="name" id= "name">
 
      <label for="location"><b>Location</b></label>
-    <input type="text" placeholder="Enter Location" name="location" required>
+    <input type="text" placeholder="Enter Location" name="location" id="location" required>
+     <script>
+          function activatePlacesSearch(){
+            var input = document.getElementById("location");
+            var autocomplete = new google.maps.places.Autocomplete(input);
+          }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoZY89UXCjtZ2xzc6qpksJpqsubivuvqE&libraries=places&callback=activatePlacesSearch">
+        </script>
 
 
     <p id="terms_conditions">By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Conditions</a>.</p>
 
     <div class="clearfix">
-      <button type="button" class="cancelbtn">Cancel</button>
-      <button type="submit" class="signupbtn">Sign Up</button>
+      <button type="button" id="signupbtn">Sign Up</button>
+      <button type="button" id="cancelbtn">Cancel</button>
     </div>
   </div>
 </form>

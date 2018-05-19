@@ -1,13 +1,11 @@
 //date picker
-  $(function() {
+$(function() {
     
     $( "#datepickerStart" ).datepicker();
     //.css("background-color", "blue");;
     $( "#datepickerEnd" ).datepicker();
   });
  
-
-
     
 $(function() {
     $("#buttonFind").click(function(){
@@ -27,9 +25,7 @@ $(function() {
        trip.start = dateStart;
        trip.end = dateEnd;
        var myString = JSON.stringify(trip);
-
-
-       alert(JSON.stringify(trip));
+       //alert(JSON.stringify(trip));
 
               //sending data to the server  
        $(function sendData() {
@@ -41,7 +37,6 @@ $(function() {
           dataType: 'json'
           });
         });
-
-
     });
 });
+
