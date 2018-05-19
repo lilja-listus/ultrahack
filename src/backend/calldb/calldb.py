@@ -61,7 +61,7 @@ class DatabaseWrapper(object):
         rows = self.q("select id, name, home from users where "+col+" = ?", val)
         if len(rows) == 0:
             return None
-        return userQuery(rows[0])
+        return rows[0]
 
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
