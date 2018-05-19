@@ -77,7 +77,9 @@ class GeneralResource(object):
 
 class LoginResource(GeneralResource):
     def on_post(self, req, resp):
-        data = json.loads(str(req.stream.read()))
+        d = req.stream.read().decode("utf-8")
+        print(d)
+        data = json.loads(d)
 
         user =self.db.getUserByEmail(data["email"]) if "email" in data else None
         if user and self.db.verifyPassword(user, data["password"]):
@@ -96,7 +98,9 @@ class LoginResource(GeneralResource):
 
 class NewUserResource(GeneralResource):
     def on_post(self, req, resp):
-        data = json.loads(str(req.stream.read()))
+        d = req.stream.read().decode("utf-8")
+        print(d)
+        data = json.loads(d)
 
         if "email" in data and "password" in data and "home" in data:
             name = data["name"] if "name" in data else ""
@@ -168,10 +172,7 @@ class TravelNoticeResource(GeneralResource):
             # TODO update visibility table
         
         # TODO this whole check should be a try/catch
-        if planID:
-            resp.status = falcon.HTTP_200
-        else:
-            resp.status = falcon.HTTP_503
+        resp.status = falcon.HTTP_200
 
 
 
