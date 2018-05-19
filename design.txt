@@ -143,10 +143,10 @@ Do we ban users from submitting travel notices to their own location?
                      "home" : <location ID>
                  }
 
- () new_user_list - POST
+ (x) new_user_list - POST
     data object: {
                      "name" : <string>,
-                     "users" : [ <user ID>, ... ]
+                     "members" : [ <user ID>, ... ]
                  }
 
 

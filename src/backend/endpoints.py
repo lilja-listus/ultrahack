@@ -32,7 +32,8 @@ def background(func, args):
     thread = Thread(target = func, args = args)
     thread.start()
 
-
+def getReqJsonBody(req):
+    return json.loads(req.stream.read().decode("utf-8"))
 
 
 
@@ -115,6 +116,18 @@ class NewUserResource(GeneralResource):
             resp.status = falcon.HTTP_400 # Bad request
 
 
+class NewUserListResource(GeneralResource):
+    def on_post(self, req, resp):
+        loggedInUser = verifyLoginAndGetUser(req.cookies)
+        data = getReqJsonBody(req)
+        if "name" in data and "members" in data:
+            listID = self.db.addUserList(loggedInUser, data["name"])
+            self.db.addUserListMembers(listID, data["members"])
+            resp.status = falcon.HTTP_200
+        else:
+            resp.status = falcon.HTTP_400
+
+
 class SharingTargetsResource(GeneralResource):
     def on_get(self, req, resp, regex=""):
         # XXX so far, I don't think this will require authentication            
@@ -188,6 +201,7 @@ app = falcon.API()
 app.add_route("/api/login", LoginResource(dbwrapper))
 app.add_route("/api/new_travel_notice", TravelNoticeResource(dbwrapper))
 app.add_route("/api/new_user", NewUserResource(dbwrapper))
+app.add_route("/api/new_user_list", NewUserListResource(dbwrapper))
 app.add_route("/api/sharing_targets/{regex}", SharingTargetsResource(dbwrapper))
 app.add_route("/api/sharing_targets", SharingTargetsResource(dbwrapper))
 app.add_route("/api/user_info/{user}", UsersResource(dbwrapper))

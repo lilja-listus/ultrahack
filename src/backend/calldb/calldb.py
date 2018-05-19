@@ -86,6 +86,22 @@ class DatabaseWrapper(object):
                                 "home" : home,
                                 "name" : name})
 
+    def addUserList(self, owner, name):
+        return self.i("user_lists", {"owner" : owner, "name" : name})
+
+    def addUserListMembers(self, user_list, members):
+        # TODO this pattern is ripe for factoring out
+        if not members:
+            return
+        query = "insert into user_list_members (user_list, user) values " \
+              + ", ".join(["(?, ?)"] * len(members)) + ";"
+        args = []
+        for member in members:
+            args.append(user_list)
+            args.append(member)
+        self.cursor.execute(query, *args)
+        self.connection.commit()
+
     # TODO check: can that query fail?
     def addTravelNotice(self, user, destination, start, end):
         return self.i("travel_plans", {"user" : user,

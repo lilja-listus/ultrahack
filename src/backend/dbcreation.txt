@@ -5,4 +5,15 @@ create table users (id bigint primary key not null AUTO_INCREMENT, email varchar
 create table travel_plans (id bigint primary key not null AUTO_INCREMENT, user
 bigint not null references users(id), destination varchar(255) not null, start_time bigint not null, end_time bigint not null);
 
-TODO: visibility
+create table visibility (travel_plan bigint references travel_plans(id), user bigint references users(id), constraint pk_visibility primary key (travel_plan, user));
+
+
+User Lists:
+
+create table user_lists (id bigint primary key not null AUTO_INCREMENT, owner bigint not null references users(id), name varchar(255) not null);
+
+create table user_list_members (user_list bigint not null references user_lists(id), user bigint not null references users(id), constraint pk_user_list_members primary key (user_list, user));
+
+
+
+Add "default charset=utf8" to each one. 
