@@ -5,7 +5,6 @@
     <title>Travel Notice
     </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js">
     </script>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
@@ -13,6 +12,13 @@
     </script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
     </script>
+    <style type="text/css">
+.ui-datepicker {
+    background: #09af00;
+    border: 1px solid #555;
+    color: #EEE;
+}
+</style>
   </head>
   <body>
     <img src="file:///home/lilja/index.jpeg" alt="Vastoma logo">
@@ -22,17 +28,17 @@
         </h4>
         Where are you going? 
         <br>
-        <input type="text" name="destination" id="destination" autocomplete="onclick">
+        <input type="text" name="destination" id="destination" autocomplete="onclick" required>
         <br>
         <p>Start Date:
           <br> 
-          <input type="text" id="datepickerStart" placeholder="Start date">
+          <input type="text" id="datepickerStart" placeholder="Start date" required>
         </p>
         <p>End Date: 
           <br>
-          <input type="text" id="datepickerEnd" placeholder="End date">
+          <input type="text" id="datepickerEnd" placeholder="End date" required>
         </p>
-        <button type="button" onclick="myFunction()">Find friend
+        <button type="button" id="buttonFind">Find friend
         </button>
         <script>
           function activatePlacesSearch(){
