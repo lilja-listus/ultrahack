@@ -117,7 +117,7 @@ class NewUserResource(GeneralResource):
 
 class SharingTargetsResource(GeneralResource):
     def on_get(self, req, resp, regex=""):
-        # XXX so far, I don't think this will require authentication
+        # XXX so far, I don't think this will require authentication            
         userInfoObjs = self.db.getUsersByNameRegex(regex)
         if userInfoObjs != None:
             # XXX add lists call when we actually have lists

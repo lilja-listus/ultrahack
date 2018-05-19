@@ -72,6 +72,7 @@ class DatabaseWrapper(object):
     # XXX this returns a list of user objects, not just IDs
     # Returns None on error TODO does that ever actually happen?
     def getUsersByNameRegex(self, regex):
+        regex = regex if regex else "" # Regex may not be None
         self.cursor.execute(userQuery + "where (name regexp ?)", regex)
         rows = self.cursor.fetchmany(100)
         return [userRow2json(r) for r in rows]
