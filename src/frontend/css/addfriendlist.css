@@ -1,0 +1,19 @@
+body{
+	text-align: center;
+	color: blue;
+}
+input{
+	padding-left: 2%;
+	margin-top:1%;
+	margin-bottom: 1%; 
+}
+
+
+form{
+	position: relative;
+    margin: 0 auto;
+
+}
+button{
+	margin-top: 1%;
+}

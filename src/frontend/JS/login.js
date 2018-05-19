@@ -21,7 +21,5 @@ $("#submitButton").click(function(){
           dataType: 'json'
           });
         });
-
-
-       });
+      });
     });
