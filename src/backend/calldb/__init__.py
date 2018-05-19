@@ -1,1 +1,1 @@
-from calldb import dbwrapper
+from .calldb import dbwrapper
