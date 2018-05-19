@@ -25,6 +25,11 @@ userQuery = "select id, name, home from users "
 def userRow2json(row):
     return {"id" : row.id, "name" : row.name, "home" : row.home}
 
+def travelNoticeRow2json(row):
+    return {"id" : row.id,
+            "destination" : row.destination,
+            "start" : row.start_time,
+            "end" : row.end_time}
 
 
 
@@ -108,6 +113,17 @@ class DatabaseWrapper(object):
         rows = self.cursor.fetchall()
         return [r[0] for r in rows]
 
+    def getTravelNotice(self, planID):
+        sql = '''select id, destination, start_time, end_time from travel_plans
+                 where id = ?'''
+        return travelNoticeRow2json(self.q(sql, planID))
+
+    def getTravelNoticesByUser(self, user):
+        sql = '''select id, destination, start_time, end_time from travel_plans
+                 where user = ?'''
+        self.cursor.execute(sql, user)
+        return [travelNoticeRow2json(r) for r in self.cursor.fetchall()]
+
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
 
@@ -121,6 +137,11 @@ class DatabaseWrapper(object):
         self.cursor.execute(userQuery + "where (name regexp ?)", regex)
         rows = self.cursor.fetchmany(100)
         return [userRow2json(r) for r in rows]
+
+    def getVisibilityByTravelNotice(self, planID):
+        sql = "select user from visibility where travel_plan = ?"
+        self.cursor.execute(sql, planID)
+        return [r[0] for r in self.cursor.fetchall()]
 
     def addNewUser(self, email, password, home, name):
         # XXX we're just putting these back into an object, after we already 

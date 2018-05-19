@@ -12,6 +12,7 @@ from threading import Thread
 
 # From local dir
 import calldb
+import notify
 
 
 ######
@@ -47,14 +48,7 @@ def getReqJsonBody(req):
 # Think about Twilio for email sending? 
 
 
-# Argument "audience" is a list of user IDs
-def handleOverlaps(audience):
-    for user in audience:
-        pass # TODO
 
-        # TODO get all of user's upcoming travel notices
-
-        # TODO do the stuff described in design doc
 
 
 def verifyLoginAndGetUser(cookies):
@@ -79,8 +73,8 @@ class GeneralResource(object):
 
     # This is here because it requires the database. 
     def convertAudience(self, owner, audience):
-        listIDs = [a.strip("#") if a.startswith("#") for a in audience]
-        userIDs = set([a if not a.startswith("#") for a in audience])
+        listIDs = [a.strip("#") for a in audience if a.startswith("#")]
+        userIDs = set([a for a in audience if not a.startswith("#")])
         userIDs.update(self.db.getListMembers(owner, listIDs))
         return userIDs
 
@@ -163,8 +157,32 @@ class UsersResource(GeneralResource):
             resp.body = json.dumps(userInfo)
 
 
-# XXX XXX XXX this class is basically untested at this point
 class TravelNoticeResource(GeneralResource):
+    # Argument "audience" is a list of user IDs
+    def handleOverlaps(user, audience):
+        userContact = {} # Only fetch if necessary
+        for friend in audience:
+            friendNotices = self.db.getTravelNoticesByUser(friend)
+            userNotices = self.db.getTravelNoticesByUser(user)
+
+            friendContact = {} # Only fetch these if we need them
+
+            # TODO filter for those that overlap with user
+            overlaps = [] # TODO fill this list with friend's travel notices
+                          # that overlap with this one of user's. Change travel
+                          # times to only match time of overlap. 
+
+            for overlap in overlaps:
+                visibilityList = self.db.getVisibilityByTravelNotice(overlap.id)
+                if friendContact:
+                    friendContact = self.db.getUserContactInfo(friend)
+                if user in visibilityList:
+                    if not userContact:
+                        userContact = self.db.getUserContactInfo(user)
+                    notify.send([friendContact, userContact], overlap)
+                else:
+                    notify.send([friendContact], overlap)
+
     def on_post(self, req, resp):
         user = verifyLoginAndGetUser(req.cookies)
         d = req.stream.read().decode("utf-8")
@@ -172,10 +190,6 @@ class TravelNoticeResource(GeneralResource):
         data = json.loads(d)
         start = data["start"] # TODO decode timestamp?
         end = data["end"] # TODO decode another timestamp?
-
-        # TODO TODO TODO For testing only!
-        user = "1" if not user else user
-
 
         # TODO check that all fields are actually included in object
 
@@ -187,13 +201,10 @@ class TravelNoticeResource(GeneralResource):
         # Handle notifications of possible overlaping schedules in background
         if "audience" in data and type(data["audience"]) == list:
             audience = self.convertAudience(data["audience"])
-            background(handleOverlaps, (audience,))
+            background(self.handleOverlaps, (user, audience))
             background(self.db.addVisibilityRow, (planID, audience))
         
-        # TODO this whole check should be a try/catch
         resp.status = falcon.HTTP_200
-
-
 
 
 
