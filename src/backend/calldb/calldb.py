@@ -42,9 +42,9 @@ class DatabaseWrapper(object):
         self.cursor.execute("use " + dbname + ";")
 
     # Just a shorter name for convenience
-    def q(self, *query, maxrows=1):
+    def q(self, *query):
         self.cursor.execute(*query)
-        return self.cursor.fetchmany(maxrows)
+        return self.cursor.fetchone()
 
     # i() for insert
     def i(self, table, data):
@@ -52,7 +52,7 @@ class DatabaseWrapper(object):
         query = "insert into " + table + " (" + ", ".join(keys) + ") values (" \
               + ", ".join(["?"]*len(keys)) + ")"
         self.cursor.execute(query, *[data[k] for k in keys])
-        rowID = self.cursor.lastrowid # XXX does this work?
+        rowID = 0 #self.cursor.fetchone().id # XXX does this work?
         self.connection.commit()
         return rowID
 
@@ -61,7 +61,7 @@ class DatabaseWrapper(object):
         rows = self.q("select id, name, home from users where "+col+" = ?", val)
         if len(rows) == 0:
             return None
-        return rows[0]
+        return userRow2json(rows[0])
 
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
@@ -72,7 +72,8 @@ class DatabaseWrapper(object):
     # XXX this returns a list of user objects, not just IDs
     # Returns None on error TODO does that ever actually happen?
     def getUsersByNameRegex(self, regex):
-        rows = self.q(userQuery + "where (name regexp ?)", regex, maxrows=100)
+        self.cursor.execute(userQuery + "where (name regexp ?)", regex)
+        rows = self.cursor.fetchmany(100)
         return [userRow2json(r) for r in rows]
 
     def addNewUser(self, email, password, home, name):
