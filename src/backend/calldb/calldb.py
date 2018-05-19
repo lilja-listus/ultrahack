@@ -63,6 +63,35 @@ class DatabaseWrapper(object):
             return None
         return userRow2json(row)
 
+    def getListsByNameRegex(self, owner, regex):
+        regex = regex if regex else "" # Regex may not be None
+        sql = '''select 
+                     user_lists.id, 
+                     user_lists.name, 
+                     user_list_members.user,
+                     users.name,
+                     users.home 
+                 from user_lists join user_list_members 
+                            on user_lists.id = user_list_members.user_list
+                                 join users 
+                            on user_list_members.user = users.id 
+                 where (user_lists.owner = ?) and (user_lists.name regexp ?)'''
+        self.cursor.execute(sql, owner, regex)
+        rows = self.cursor.fetchall() # XXX A bit dangerous. Cap list size?
+        data = {}
+        for row in rows:
+            if row[0] in data:
+                data[row[0]]["members"].append({"id" : row[2],
+                                                "name" : row[3],
+                                                "home" : row[4]})
+            else:
+                data[row[0]] = {"id" : row[0],
+                                "name" : row[1],
+                                "members" : [{"id" : row[2],
+                                              "name" : row[3],
+                                              "home" : row[4]}]}
+        return [data[k] for k in data]
+
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
 

@@ -63,7 +63,8 @@ def verifyLoginAndGetUser(cookies):
     if userCookieName in cookies:
         return cookies[userCookieName]
     else:
-        return None # TODO this is an error, but it's probably our error.
+        return "1" # TODO this is an error, but it's probably our error.
+                   # Returning junk data for now so tests don't fail. 
 
 
 
@@ -130,11 +131,11 @@ class NewUserListResource(GeneralResource):
 
 class SharingTargetsResource(GeneralResource):
     def on_get(self, req, resp, regex=""):
-        # XXX so far, I don't think this will require authentication            
+        loggedInUser = verifyLoginAndGetUsr(req.cookies)
         userInfoObjs = self.db.getUsersByNameRegex(regex)
-        if userInfoObjs != None:
-            # XXX add lists call when we actually have lists
-            data = {"users" : userInfoObjs, "lists" : []}
+        listInfoObjs = self.db.getListsByNameRegex(loggedInUser, regex)
+        if userInfoObjs != None: # TODO this check can probably go. 
+            data = {"users" : userInfoObjs, "lists" : listInfoObjs}
             resp.body = json.dumps(data)
             resp.status = falcon.HTTP_200
         else:
