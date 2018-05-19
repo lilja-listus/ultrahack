@@ -92,7 +92,6 @@ class LoginResource(GeneralResource):
             resp.set_cookie(authTokenCookieName, authToken)
 
             resp.status = falcon.HTTP_200
-            # XXX do we send back a specific redirect URL?
         else:
             resp.status = falcon.HTTP_401
 
@@ -138,11 +137,9 @@ class UsersResource(GeneralResource):
         userInfo = self.db.getUserInfo(user)
 
         if not userInfo:
-            # XXX Is this enough?
             resp.status = falcon.HTTP_404 # User not found
         else:
             resp.status = falcon.HTTP_200
-            # XXX I *think* this needs a string?
             resp.body = json.dumps(userInfo)
 
 
