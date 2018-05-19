@@ -5,23 +5,22 @@
     <title>Travel Notice
     </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <script src="https://code.jquery.com/jquery-1.12.4.js">
-    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <link rel="stylesheet" type="text/css" href="./css/style.css">
-    <script src="./JS/travelNotice.js">
-    </script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
-    </script>
+    <script src="./JS/travelNotice.js"></script>
+   
     <style type="text/css">
 .ui-datepicker {
     background: #09af00;
-    border: 1px solid #555;
+    border: none;
     color: #EEE;
 }
 </style>
   </head>
   <body>
-    <img src="file:///home/lilja/index.jpeg" alt="Vastoma logo">
+    <img src="images/index.jpeg" alt="Vastoma logo">
     <div id="form_background">
       <form id="form">
         <h4 id="new_travel">New travel
@@ -37,9 +36,7 @@
         <p>End Date: 
           <br>
           <input type="text" id="datepickerEnd" placeholder="End date" required>
-        </p>
-        <button type="button" id="buttonFind">Find friend
-        </button>
+       
         <script>
           function activatePlacesSearch(){
             var input = document.getElementById("destination");
@@ -48,6 +45,16 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoZY89UXCjtZ2xzc6qpksJpqsubivuvqE&libraries=places&callback=activatePlacesSearch">
         </script>
+<br>
+        <br>
+
+        Find a friend 
+        <br>
+        <input type="text" name="findFriend" id="findFriend" autocomplete="onclick">
+        <br>
+ </p>
+        <button type="button" id="buttonFind">Find friend
+        </button>
       </form> 
       </body>
     </html>

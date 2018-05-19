@@ -1,24 +1,27 @@
-$(document).ready(function() {
+$(function() {
 
 $("#submitButton").click(function(){
-  $.ajax({
-    type: 'POST', 
-    url: 'http://localhost:5000/api/login', 
-    dataType: 'json',
-    data: {'login': login, 'password': password},
-    success: function (x) {                
-      $("#add_err").html(x.response);
+  
+   var email = $("#email").val();
+   var password = $("#password").val();
+       
 
-      //to check whether the login was successful
-       $('#loginForm').hide();
-            $('div#loginResult').text("data.success: " + data.success );
-            $('div#loginResult').addClass("success");
-    },
-    beforeSend:function(){
-      $("#add_err").html("Loading...")
-    }
-  });
-  return false;
-});
+   var login = new Object();
+       login.email = email;
+       login.password =  password;
 
-});
+       var loginStr = JSON.stringify(login); 
+       alert(loginStr); 
+
+   $(function sendData() {
+          $.ajax({
+          url: 'http://ec2-34-230-45-89.compute-1.amazonaws.com/api/login',
+          type: 'POST',
+          data: loginStr, 
+          dataType: 'json'
+          });
+        });
+
+
+       });
+    });
