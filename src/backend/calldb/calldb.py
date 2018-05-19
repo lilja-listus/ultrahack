@@ -92,6 +92,22 @@ class DatabaseWrapper(object):
                                               "home" : row[4]}]}
         return [data[k] for k in data]
 
+    # XXX Takes a list of list IDs, or a single list ID (string).
+    def getListMembers(self, owner, user_lists):
+        if type(user_lists) != list:
+            user_lists = [user_lists]
+        if len(user_lists) <= 0:
+            return []
+        sql = '''select user_list_members.user 
+                 from user_lists join user_list_members 
+                            on user_lists.id = user_list_members.user_list 
+                 where (user_lists.owner = ?) 
+                    and user_list_members.user_list in '''
+        sql += "(" + ", ".join(["?"] * len(user_lists)) + ")"
+        self.cursor.execute(sql, owner, *[i for i in user_lists])
+        rows = self.cursor.fetchall()
+        return [r[0] for r in rows]
+
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
 

@@ -77,6 +77,13 @@ class GeneralResource(object):
     def __init__(self, dbwrapper):
         self.db = dbwrapper
 
+    # This is here because it requires the database. 
+    def convertAudience(self, owner, audience):
+        listIDs = [a.strip("#") if a.startswith("#") for a in audience]
+        userIDs = set([a if not a.startswith("#") for a in audience])
+        userIDs.update(self.db.getListMembers(owner, listIDs))
+        return userIDs
+
 
 class LoginResource(GeneralResource):
     def on_post(self, req, resp):
@@ -131,15 +138,14 @@ class NewUserListResource(GeneralResource):
 
 class SharingTargetsResource(GeneralResource):
     def on_get(self, req, resp, regex=""):
-        loggedInUser = verifyLoginAndGetUsr(req.cookies)
+        loggedInUser = verifyLoginAndGetUser(req.cookies)
         userInfoObjs = self.db.getUsersByNameRegex(regex)
         listInfoObjs = self.db.getListsByNameRegex(loggedInUser, regex)
-        if userInfoObjs != None: # TODO this check can probably go. 
-            data = {"users" : userInfoObjs, "lists" : listInfoObjs}
-            resp.body = json.dumps(data)
-            resp.status = falcon.HTTP_200
-        else:
-            resp.status = falcon.HTTP_503
+        for obj in listInfoObjs:
+            obj["id"] = "#" + str(obj["id"])
+        data = {"users" : userInfoObjs, "lists" : listInfoObjs}
+        resp.body = json.dumps(data)
+        resp.status = falcon.HTTP_200
 
 
 class UsersResource(GeneralResource):
@@ -180,8 +186,9 @@ class TravelNoticeResource(GeneralResource):
 
         # Handle notifications of possible overlaping schedules in background
         if "audience" in data and type(data["audience"]) == list:
-            background(handleOverlaps, (data["audience"],))
-            background(self.db.addVisibilityRow, (planID, data["audience"]))
+            audience = self.convertAudience(data["audience"])
+            background(handleOverlaps, (audience,))
+            background(self.db.addVisibilityRow, (planID, audience))
         
         # TODO this whole check should be a try/catch
         resp.status = falcon.HTTP_200
