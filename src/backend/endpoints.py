@@ -77,7 +77,7 @@ class GeneralResource(object):
 
 class LoginResource(GeneralResource):
     def on_post(self, req, resp):
-        data = json.load(req.stream)
+        data = json.loads(str(req.stream.read()))
 
         user =self.db.getUserByEmail(data["email"]) if "email" in data else None
         if user and self.db.verifyPassword(user, data["password"]):
@@ -96,7 +96,7 @@ class LoginResource(GeneralResource):
 
 class NewUserResource(GeneralResource):
     def on_post(self, req, resp):
-        data = json.load(req.stream)
+        data = json.loads(str(req.stream.read()))
 
         if "email" in data and "password" in data and "home" in data:
             name = data["name"] if "name" in data else ""
@@ -145,9 +145,15 @@ class UsersResource(GeneralResource):
 class TravelNoticeResource(GeneralResource):
     def on_post(self, req, resp):
         user = verifyLoginAndGetUser(req.cookies)
-        data = json.load(req.stream)
+        d = req.stream.read().decode("utf-8")
+        print(d)
+        data = json.loads(d)
         start = data["start"] # TODO decode timestamp?
         end = data["end"] # TODO decode another timestamp?
+
+        # TODO TODO TODO For testing only!
+        user = "1" if not user else user
+
 
         # TODO check that all fields are actually included in object
 
