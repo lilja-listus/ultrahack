@@ -43,14 +43,6 @@ def getReqJsonBody(req):
 ################################################################################
 
 
-# TODO a function to send emails and push notifs.
-# I think there's an Amazon service for one of those at least?
-# Think about Twilio for email sending? 
-
-
-
-
-
 def verifyLoginAndGetUser(cookies):
     # TODO verify that user is logged in
     # TODO throw an error to hijack request if not
