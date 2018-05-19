@@ -156,6 +156,13 @@ class DatabaseWrapper(object):
                                 "home" : home,
                                 "name" : name})
 
+    def addPushSubscription(self, user, endpoint, p256dh_key, auth_key):
+        sql = '''insert into push_subscriptions 
+                        (user, endpoint, p256dh_key, auth_key)
+                 values (?, ?, ?, ?)'''
+        self.cursor.execute(sql, user, endpoint, p256dh_key, auth_key)
+        self.connection.commit()
+
     def addUserList(self, owner, name):
         return self.i("user_lists", {"owner" : owner, "name" : name})
 

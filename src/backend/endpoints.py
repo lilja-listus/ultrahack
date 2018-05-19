@@ -122,6 +122,15 @@ class NewUserListResource(GeneralResource):
             resp.status = falcon.HTTP_400
 
 
+class SavePushSubscription(GeneralResource):
+    def on_post(self, req, resp):
+        loggedInUser = verifyLoginAndGetUser(req.cookies)
+        data = getReqJsonBody(req)
+        # TODO verify all necessary fields
+        # TODO db call
+        resp.status = falcon.HTTP_200
+
+
 class SharingTargetsResource(GeneralResource):
     def on_get(self, req, resp, regex=""):
         loggedInUser = verifyLoginAndGetUser(req.cookies)

@@ -16,4 +16,11 @@ create table user_list_members (user_list bigint not null references user_lists(
 
 
 
+Push Subscriptions:
+
+create table push_subscriptions (user bigint not null references users(id), endpoint varchar(255) not null, p256dh_key varchar(255) not null, auth_key varchar(255) not null);
+
+
+
+
 Add "default charset=utf8" to each one. 
