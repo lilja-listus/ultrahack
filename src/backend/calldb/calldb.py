@@ -125,6 +125,9 @@ class DatabaseWrapper(object):
         self.cursor.execute(sql, user, destination, start, end)
         return [travelNoticeRow2json(r) for r in self.cursor.fetchall()]
 
+    def getUserContactInfo(self, user):
+        return self.q("select email from users where id = ?", user)[0]
+
     def getUserInfo(self, user):
         return self.qUserWhere("id", user)
 

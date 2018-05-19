@@ -169,16 +169,7 @@ class TravelNoticeResource(GeneralResource):
 
             friendContact = {} # Only fetch these if we need them
 
-            # TODO filter for those that overlap with user
-            #overlaps = [] # TODO fill this list with friend's travel notices
-                          # that overlap with this one of user's. Change travel
-                          # times to only match time of overlap.
-
-        #    for f in friendNotices:
-        #        if f["start"] < data["end"] and data["start"] < f["end"]:
-        #            # TODO match
-
-            # TODO can we do all of this in the database? I think so, but
+            # XXX can we do all of this in the database? I think so, but
             # that's a problem for a later date. 
             for overlap in overlaps:
                 visibilityList = self.db.getVisibilityByTravelNotice(overlap.id)
