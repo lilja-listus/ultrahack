@@ -1,2 +1,5 @@
 Database: vastomadb.c9xefv9wj6wi.eu-central-1.rds.amazonaws.com / check with me
 Server: ec2-34-230-45-89.compute-1.amazonaws.com / use key
+
+Launch Chrome in such a way that self-signed cert is accepted: 
+google-chrome-stable --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=ec2-34-230-45-89.compute-1.amazonaws.com --user-data-dir=/some/throwaway/dir
