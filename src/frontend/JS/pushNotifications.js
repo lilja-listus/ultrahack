@@ -57,7 +57,7 @@
                         + "h6X2-_NSI7HZLeCb8JnHBqTCknQn-i0kws"
                     )
                 });
-            ).then(function(pushSubscription) {
+            }).then(function(pushSubscription) {
                 callSavePushEndpoint(pushSubscription);
             });
     }
