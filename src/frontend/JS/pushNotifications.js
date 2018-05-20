@@ -45,6 +45,26 @@
         }).then(function(responseData) {
             // XXX Nothing in particular to do here
         });
+    
+    }
+
+
+    // From https://github.com/GoogleChromeLabs/web-push-codelab/blob/master/app/scripts/main.js,
+    // which appears to be under apache license.
+    // Was originally called urlB64ToUint8Array
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
     }
 
     function subscribeToPush() {
@@ -53,8 +73,8 @@
                 return registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(
-                        "BNIsL4znqW3WbwMBSkZyQQ5Hb3urTmatxOBOgmtEZ03ux6I9LYzCh"
-                        + "h6X2-_NSI7HZLeCb8JnHBqTCknQn-i0kws"
+                    "BOs0jAT7TZgCoSlCfOUhFTzOFq339unvnkbQFd_atBMjOm9o4T7OKiEerFn" 
+                    + "goPEAtEsgVw219s5E5BnL9P2IvtI"
                     )
                 });
             }).then(function(pushSubscription) {
