@@ -122,7 +122,7 @@ class NewUserListResource(GeneralResource):
             resp.status = falcon.HTTP_400
 
 
-class SavePushSubscription(GeneralResource):
+class SavePushSubscriptionResource(GeneralResource):
     def on_post(self, req, resp):
         loggedInUser = verifyLoginAndGetUser(req.cookies)
         data = getReqJsonBody(req)
@@ -176,15 +176,16 @@ class TravelNoticeResource(GeneralResource):
             # XXX can we do all of this in the database? I think so, but
             # that's a problem for a later date. 
             for overlap in overlaps:
+                overlap.users = [user, friend]
                 visibilityList = self.db.getVisibilityByTravelNotice(overlap.id)
                 if friendContact:
                     friendContact = self.db.getUserContactInfo(friend)
                 if user in visibilityList:
                     if not userContact:
                         userContact = self.db.getUserContactInfo(user)
-                    notify.send([friendContact, userContact], overlap)
+                    notify.overlap([friendContact, userContact], overlap)
                 else:
-                    notify.send([friendContact], overlap)
+                    notify.overlap([friendContact], overlap)
 
     def on_post(self, req, resp):
         user = verifyLoginAndGetUser(req.cookies)
@@ -224,6 +225,8 @@ app.add_route("/api/login", LoginResource(dbwrapper))
 app.add_route("/api/new_travel_notice", TravelNoticeResource(dbwrapper))
 app.add_route("/api/new_user", NewUserResource(dbwrapper))
 app.add_route("/api/new_user_list", NewUserListResource(dbwrapper))
+spsr = SavePushSubscriptionResource(dbwrapper) # Too long otherwise
+app.add_route("/api/save_push_subscription", spsr)
 app.add_route("/api/sharing_targets/{regex}", SharingTargetsResource(dbwrapper))
 app.add_route("/api/sharing_targets", SharingTargetsResource(dbwrapper))
 app.add_route("/api/user_info/{user}", UsersResource(dbwrapper))
