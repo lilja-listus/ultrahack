@@ -32,21 +32,6 @@
         });
     }
 
-    function subscribeToPush() {
-        return navigator.serviceWorker.register("JS/serviceWorker.js")
-            .then(function(registration) {
-                return registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(
-                        "BNIsL4znqW3WbwMBSkZyQQ5Hb3urTmatxOBOgmtEZ03ux6I9LYzCh"
-                        + "h6X2-_NSI7HZLeCb8JnHBqTCknQn-i0kws"
-                    )
-                });
-            ).then(function(pushSubscription) {
-                return pushSubscription;
-            });
-    }
-
     function callSavePushEndpoint(subscription) {
         return fetch("api/save_push_subscription", {
             method: "POST",
@@ -61,5 +46,26 @@
             // XXX Nothing in particular to do here
         });
     }
+
+    function subscribeToPush() {
+        navigator.serviceWorker.register("JS/serviceWorker.js")
+            .then(function(registration) {
+                return registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(
+                        "BNIsL4znqW3WbwMBSkZyQQ5Hb3urTmatxOBOgmtEZ03ux6I9LYzCh"
+                        + "h6X2-_NSI7HZLeCb8JnHBqTCknQn-i0kws"
+                    )
+                });
+            ).then(function(pushSubscription) {
+                callSavePushEndpoint(pushSubscription);
+            });
+    }
+
+
+    // Now actually do the stuff
+    registerServiceWorker();
+    getUserPermission();
+    subscribeToPush();
 
 })();
